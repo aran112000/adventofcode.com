@@ -16,20 +16,31 @@ $input = '414 382 1515 319 83 1327 116 391 101 749 1388 1046 1427 105 1341 1590
 146 1116 153 815 2212 2070 599 3018 2640 47 125 2292 165 2348 2694 184
 1704 2194 1753 146 2063 1668 1280 615 163 190 2269 1856 150 158 2250 2459';
 
-$checksum = 0;
-foreach (explode("\n", $input) as $line) {
+$lines = explode("\n", $input);
+
+// --- Part One ---
+$sum = 0;
+foreach ($lines as $line) {
     $rows = explode(' ', $line);
-    $min = $rows[0];
-    $max = $rows[0];
-    foreach ($rows as $row) {
-        if ($row < $min) {
-            $min = $row;
-        } else if ($row > $max) {
-            $max = $row;
+    $sum += max($rows) - min($rows);
+}
+echo $sum . PHP_EOL;
+
+// --- Part Two ---
+$sum = 0;
+foreach ($lines as $line) {
+    $row_set_1 = $row_set_2 = explode(' ', $line);
+    foreach ($row_set_1 as $row1) {
+        foreach ($row_set_2 as $row2) {
+            if ($row1 != $row2) {
+                $div = (max([$row1, $row2]) / min([$row1, $row2]));
+                if (is_int($div)) {
+                    $sum += $div;
+                    break 2;
+                }
+            }
         }
     }
-    $diff = $max - $min;
-    $checksum += $diff;
 }
 
-echo $checksum . PHP_EOL;
+echo $sum . PHP_EOL;
