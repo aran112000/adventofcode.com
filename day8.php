@@ -13,13 +13,10 @@ foreach (explode(';', $input) as $line) {
 
     if (@assert('$vars[\'' . str_replace($assertion_var . ' ', $assertion_var . '\'] ', $assertion))) {
         $computation_var = explode(' ', $computation, 2)[0];
-        if (!isset($vars[$computation_var])) {
-            $vars[$computation_var] = 0;
-        }
         if (strstr($computation, ' dec ')) {
-            $vars[$computation_var] -= filter_var($computation, FILTER_SANITIZE_NUMBER_INT);
+            @$vars[$computation_var] -= filter_var($computation, FILTER_SANITIZE_NUMBER_INT);
         } else {
-            $vars[$computation_var] += filter_var($computation, FILTER_SANITIZE_NUMBER_INT);
+            @$vars[$computation_var] += filter_var($computation, FILTER_SANITIZE_NUMBER_INT);
         }
 
         if ($vars[$computation_var] > $max_value) {
@@ -28,5 +25,5 @@ foreach (explode(';', $input) as $line) {
     }
 }
 
-echo '1: ' . max($vars) . PHP_EOL;
-echo '2: ' . $max_value . PHP_EOL;
+echo max($vars) . PHP_EOL;
+echo $max_value . PHP_EOL;
